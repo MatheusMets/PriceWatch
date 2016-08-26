@@ -18,6 +18,6 @@ class SpiderCasasBahia(scrapy.Spider):
 		'Descrição': vitrine.css('a::attr("title")').extract_first(),
                 'link': vitrine.css('a::attr("href")').extract_first(),
             }
-	link_next = response.css('ul.ListaPaginas a::attr("href")').extract_first()
+	link_next = response.css('li.next a::attr("href")').extract_first()
         if link_next:
             yield scrapy.Request(link_next)
