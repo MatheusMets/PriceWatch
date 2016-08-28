@@ -5,7 +5,7 @@
 >>>>>>> dcd5983e4dc16d30105621a2f1fbe1f01ee3674d
 import scrapy
 
-# RODE ESTE ARQUIO DA SEGUINTE FORMA:
+# RODE ESTE ARQUIO DA SEGUINTE FORMA :
 # scrapy runspider spider_casas_banhia.py -o tabela_links.csv
 
 
