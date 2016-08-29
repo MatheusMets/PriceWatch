@@ -64,6 +64,7 @@
 {
   _id: (BSON object) número de identificação criado pelo próprio mongo,
   available: (true/false) disponibilidade do produto,
+  brand: (String) marca do produto,
   color: (String) cor majoritária do produto
   display_feature: (Array de Strings) tipos de tela (LCD/LED, Touch, 3D, etc),
   display_size: (String) tamanho de tela,

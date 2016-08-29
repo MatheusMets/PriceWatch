@@ -1,6 +1,8 @@
 # coding: utf-8
 import scrapy
+
 class SpiderCasasBahia(scrapy.Spider):
+
   name = 'spider'
   start_urls = ['http://www.casasbahia.com.br/Informatica/Notebook/?Filtro=C56_C57&paginaAtual=6&ComparacaoProdutos=&AdicionaListaCasamento=']
   download_delay = 1.5
