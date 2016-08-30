@@ -52,46 +52,20 @@ class SpiderCasasBahia(scrapy.Spider):
   def parse(self, response):
     data = {}
     data['name'] = response.xpath('//*[@itemprop="name"]/text()')
-    print data
-
     data['color'] = response.xpath('//*[@class="Cor"]/dd/text()')
-    print data
-
     data['display_size'] = response.xpath('//*[@class="Tamanho-da-tela even"]/dd/text()')
-    print data
-
     data['display_feature'] = response.xpath('//*[@class="Tipo-de-tela even"]/dd/text()')
-    print data
-
     data['processor'] = response.xpath('//*[@class="Processador even"]/dd/text()')
-    print data
-
     data['graphics_processor'] = response.xpath('//*[@class="Placa-de-video even"]/dd/text()')
-    print data
-
     data['operating_system'] = response.xpath('//*[@class="Sistema-operacional"]/dd/text()')
-    print data
-
     data['ram_memory'] = response.xpath('//*[@class="Memoria-RAM even"]/dd/text()')
-    print data
-
     data['url'] = response.url
-    print data
-
     data['image_url'] = response.xpath('//*[@itemprop="image"]//image/@src').extract()
-    print data
-
     storage = get_storage(response)
     if storage != None: data['storage'], data['storage_type'] = storage
-    print data
-
     money_value = get_availability(response)
     data['available'], data['price'] = money_value
-    print data
-
     data['brand'] = get_brand(data['name'])
-    print data
-
     yield data
 
 
