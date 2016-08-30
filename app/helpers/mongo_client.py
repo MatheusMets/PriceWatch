@@ -5,15 +5,17 @@ from pymongo import MongoClient
 class MongoDB:
 
   # variável contendo o banco
-  db = MongoClient().price_watch
+  def __init__(self):
+    self.client = MongoClient()
+    self.db = self.client.PriceWatch
 
   # método de inserção simples, apenas um dado inserido por vez
-  def insert(datum):
-    return db[collection].insert_one(datum)
+  def insert(self, datum):
+    return self.db.products.insert_one(datum)
 
   # método de inserção múltipla, vários dados inseridos por vez
   def bulk_insert(data):
-    return db[collection].inser_many(data)
+    return self.db.products.inser_many(data)
 
   # exporta o banco atual para o arquivo mongo.json localizado na pasta principal do projeto
   def export():

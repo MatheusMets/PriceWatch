@@ -6,11 +6,8 @@ import requests
 
 class HttpClient:
 
-  def get_request(url):
-    return requests.get(url)
+  def get_request(self, url):
+    return html.fromstring(requests.get(url).content)
 
-  def parse_result(content):
-    return html.fromstring(content)
-
-  def get_element_by_xpath(tree, xpath_string):
+  def get_element_by_xpath(self, tree, xpath_string):
     return tree.xpath(xpath_string)[0].strip()

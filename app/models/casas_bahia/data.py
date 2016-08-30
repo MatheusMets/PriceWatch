@@ -1,17 +1,38 @@
-# coding: utf-8
-import scrapy
+# -*- coding: utf-8 -*-
 import re
+from helpers.http_client import HttpClient
+from helpers.data_list import DataList
 
+class SpiderCasasBahia():
 
-class SpiderCasasBahia(scrapy.Spider):
+  def __init__(self, response, url):
+    self.response = response
+    self.url = url
 
-  name = 'spider'
-  start_urls = ['http://www.casasbahia.com.br/Informatica/Notebook/Notebook-Positivo-Stilo-One-XC3550-com-Intel-Atom-Quad-Core-2GB-32GB-SSD-Leitor-de-Cartoes-HDMI-Bluetooth-Webcam-LED-14-e-Windows-10-9233539.html']
-  download_delay = 1.5
+  def parse(self):
+    data = {}
 
-  def get_storage(response):
-    ssd = response.xpath('//*[@class="Memoria-Flash--SSD-"]/dd/text()')
-    hd = response.xpath('//*[@class="Disco-rigido--HD-"]/dd/text()')
+    data['name'] = self.response.xpath('//*[@itemprop="name"]/text()')[0].strip()
+    data['color'] = self.response.xpath('//*[@class="Cor"]/dd/text()')[0].strip()
+    data['display_size'] = self.response.xpath('//*[@class="Tamanho-da-tela even"]/dd/text()')[0].strip()
+    data['display_feature'] = self.response.xpath('//*[@class="Tipo-de-tela even"]/dd/text()')
+    data['processor'] = self.response.xpath('//*[@class="Processador even"]/dd/text()')
+    data['graphics_processor'] = self.response.xpath('//*[@class="Placa-de-video even"]/dd/text()')[0].strip()
+    data['operating_system'] = self.response.xpath('//*[@class="Sistema-operacional"]/dd/text()')[0].strip()
+    data['ram_memory'] = self.response.xpath('//*[@class="Memoria-RAM even"]/dd/text()')[0].strip()
+    data['url'] = self.url
+    data['image_url'] = self.response.xpath('//*[@itemprop="image"]//image/@src')
+    storage = self.get_storage()
+    if storage != None: data['storage'], data['storage_type'] = storage
+    money_value = self.get_availability()
+    data['available'], data['price'] = money_value
+    data['brand'] = self.get_brand(data['name'])
+
+    return data
+
+  def get_storage(self):
+    ssd = self.response.xpath('//*[@class="Memoria-Flash--SSD-"]/dd/text()')[0].strip()
+    hd = self.response.xpath('//*[@class="Disco-rigido--HD-"]/dd/text()')[0].strip()
 
     # se não tiver ssd
     if (re.search('N.o se aplica', ssd) == None):
@@ -24,8 +45,8 @@ class SpiderCasasBahia(scrapy.Spider):
     return None
 
 
-  def get_availability(response):
-    price = response.xpath('//*[@class="sale price"]/text()')
+  def get_availability(self):
+    price = self.response.xpath('//*[@class="sale price"]/text()')[0].strip()
     price = re.sub('\,', '.', price)
     try:
       float(price)
@@ -33,39 +54,9 @@ class SpiderCasasBahia(scrapy.Spider):
     except ValueError:
       return [False, 0]
 
-  def get_brand(product_name):
+  def get_brand(self, product_name):
     data_list = DataList()
     brands_regex = data_list.get_brands_regex()
     return re.search(brands_regex, product_name)
-
-  def is_valid_brand(self, string=""):
-    return (string.lower() in get_brands_list())
-
-  def get_brands_regex():
-    return '/' + '|'.join(map(str, get_brands_list())) + '/'
-
-  def get_brands_list():
-    return ['acer', 'asus', 'apple', 'dell', 'hp', 'samsung']
-
-
-
-  def parse(self, response):
-    data = {}
-    data['name'] = response.xpath('//*[@itemprop="name"]/text()')
-    data['color'] = response.xpath('//*[@class="Cor"]/dd/text()')
-    data['display_size'] = response.xpath('//*[@class="Tamanho-da-tela even"]/dd/text()')
-    data['display_feature'] = response.xpath('//*[@class="Tipo-de-tela even"]/dd/text()')
-    data['processor'] = response.xpath('//*[@class="Processador even"]/dd/text()')
-    data['graphics_processor'] = response.xpath('//*[@class="Placa-de-video even"]/dd/text()')
-    data['operating_system'] = response.xpath('//*[@class="Sistema-operacional"]/dd/text()')
-    data['ram_memory'] = response.xpath('//*[@class="Memoria-RAM even"]/dd/text()')
-    data['url'] = response.url
-    data['image_url'] = response.xpath('//*[@itemprop="image"]//image/@src').extract()
-    storage = get_storage(response)
-    if storage != None: data['storage'], data['storage_type'] = storage
-    money_value = get_availability(response)
-    data['available'], data['price'] = money_value
-    data['brand'] = get_brand(data['name'])
-    yield data
 
 
