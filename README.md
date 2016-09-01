@@ -7,7 +7,9 @@
   - [Instalar MongoDB](#Instalar-mongodb)
 2. [Modelo de produto - MongoDB](#modelo-de-produto)
 3. [Arquitetura do projeto](#Arquitetura-do-projeto)
-4. [OFF-Topic](#OFF-TOPIC)
+4. [Como rodar extração de links](#Extracao-de-links)
+5. [Como rodar extração de dados](#Extracao-de-dados)
+6. [OFF-Topic](#OFF-TOPIC)
 
 ***
 # <a id="ambiente-de-desenvolvimento">Ambiente de desenvolvimento</a>
@@ -95,6 +97,19 @@
 
 ***
 
+# <a id="Extracao-de-links">Como rodar extração de links?</a>
+ * Entre na pasta da loja desejada
+ * No terminal digite `scrapy runspider <nome_loja>.py -t json -o - > links_list.json`
+ * A lista de links será gerada dentro do arquivo links_list.json na mesma pasta da loja
+ * Faça as devidas validações para guardar somente links válidos (notebooks disponíveis ou não)
+
+***
+
+# <a id="Extracao-de-dados">Como rodar extração de dados?</a>
+
+### A ser definido
+
+***
 # <a id="OFF-TOPIC">OFF-TOPIC</a>
 
 Sugestão de editor te textos:
