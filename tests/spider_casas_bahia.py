@@ -1,3 +1,4 @@
+# coding: utf-8
 import scrapy
 
 # RODE ESTE ARQUIO DA SEGUINTE FORMA :
@@ -7,9 +8,7 @@ import scrapy
 
 class SpiderCasasBahia(scrapy.Spider):
     name = 'spider'
-    start_urls = [
-        'http://www.casasbahia.com.br/Informatica/Notebook/?Filtro=C56_C57'
-    ]
+    start_urls = ['http://www.casasbahia.com.br/Informatica/Notebook/?Filtro=C56_C57']
     download_delay = 1.5
 
     def parse(self, response):
